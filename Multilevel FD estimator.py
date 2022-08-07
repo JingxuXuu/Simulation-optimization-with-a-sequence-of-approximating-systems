@@ -1,10 +1,4 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Jan 27 15:46:42 2021
-
-@author: xujingxu
-"""
-
+# This file provides the realization of the algorithm for multilevel gradient estimators.
 import numpy as np
 obj=2
 d=20
@@ -54,7 +48,7 @@ def multilevelgradient(M, m ,N_0,m_0, x, beta, rho, r, t, B,mu):
     approxcumgrad=np.zeros(d)
     h = (d**(-3/2))*(t**(-rho))
     for k in range(m+1):
-            N= int(np.ceil(N_0*(t**(r+2*rho))*(m+1)*(M**(-(k+1)))))
+            N= int(np.ceil(N_0*(d**4)*(t**(r+2*rho))*(m+1)*(M**(-(k+1)))))
             
             if k ==0 :
                 for j in range(N):
@@ -90,7 +84,7 @@ def multilevelsgd(M, gamma_0,N_0,m_0, x_0, beta, rho, r, t, B,mu):
     loss=np.zeros(t)
     
     for i in range(1,t+1):
-        m= int(np.ceil(4*np.log(m_0*(i**rho))/np.log(M)))
+        m= int(np.ceil(4*np.log(m_0*d*(i**rho))/np.log(M)))
         approxgrad, addcomplex= multilevelgradient(M, m, N_0,m_0, x, beta, rho, r, i, B,mu)
         
         x = x - gamma_0* approxgrad / (i**beta)
